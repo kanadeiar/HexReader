@@ -2,7 +2,7 @@
 {
     public interface IGetDataService
     {
-        IEnumerable<BinaryRecord> GetLinesDataFromFile(string filename, int offset);
+        IEnumerable<BinaryRecord> GetLinesDataFromFile(string filename, long offset);
         long GetFileCountLines(string filename);
     }
 }

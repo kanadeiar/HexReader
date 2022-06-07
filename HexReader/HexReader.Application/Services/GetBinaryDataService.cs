@@ -10,15 +10,15 @@ public class GetBinaryDataService : IGetDataService
         _encoding = Encoding.GetEncoding(1251);
     }
 
-    public IEnumerable<BinaryRecord> GetLinesDataFromFile(string filename, int offset)
+    public IEnumerable<BinaryRecord> GetLinesDataFromFile(string filename, long offset)
     {
-        var lines = _readerService.ReadBinaryLinesWithOffset(filename, offset, 60);
+        var lines = _readerService.ReadBinaryLinesWithOffset(filename, offset, 30);
         var sb16 = new StringBuilder(16);
         var list = lines.Where(x => x is { }).Select((x, i) => new BinaryRecord
         {
             Id = i,
-            Number = (i + offset) * 10,
-            HexCodes = x,
+            Number = ((i + offset) * 10).ToString("00000000"),
+            HexCodes = x.Select(x => x.ToString("X2")).ToArray(),
             Dump = GetDumpFromHexCodes(x, sb16),
         }).ToList();
         return list;

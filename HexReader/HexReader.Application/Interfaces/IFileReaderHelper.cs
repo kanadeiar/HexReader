@@ -2,6 +2,6 @@
 
 public interface IFileReaderHelper
 {
-    byte[][] ReadBinaryLinesWithOffset(string filename, int offset, int count);
+    byte[][] ReadBinaryLinesWithOffset(string filename, long offset, long count);
     (bool exists, long size) GetFileInfo(string filename);
 }

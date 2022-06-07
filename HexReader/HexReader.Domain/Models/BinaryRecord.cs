@@ -1,27 +1,25 @@
-﻿using HexReader.CoreDomain.Models.Base;
-
-namespace HexReader.CoreDomain.Models;
+﻿namespace HexReader.CoreDomain.Models;
 
 /// <summary>
 /// 16 байт отбражаемых бинарных данных файла
 /// </summary>
 public class BinaryRecord : BaseModel
 {
-    private long _Number;
+    private string _Number;
     /// <summary>
     /// Номер строки
     /// </summary>
-    public long Number
+    public string Number
     {
         get => _Number;
         set => Set(ref _Number, value);
     }
 
-    private byte[] _HexCodes;
+    private string[] _HexCodes;
     /// <summary>
-    /// Коды символов 16 байт
+    /// Коды символов
     /// </summary>
-    public byte[] HexCodes
+    public string[] HexCodes
     {
         get => _HexCodes;
         set => Set(ref _HexCodes, value);

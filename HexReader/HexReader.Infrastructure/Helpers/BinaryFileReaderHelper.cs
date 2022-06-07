@@ -2,7 +2,7 @@
 
 public class BinaryFileReaderHelper : IFileReaderHelper
 {
-    public byte[][] ReadBinaryLinesWithOffset(string filename, int offset, int count)
+    public byte[][] ReadBinaryLinesWithOffset(string filename, long offset, long count)
     {
         if (offset < 0)
         {
@@ -12,7 +12,7 @@ public class BinaryFileReaderHelper : IFileReaderHelper
         using (var fstream = new FileStream(filename, FileMode.Open))
         {
             fstream.Seek(offset * 16, SeekOrigin.Begin);
-            var i = 0;
+            var i = 0L;
             while (fstream.Position < fstream.Length && i++ < count)
             {
                 byte[] buffer = new byte[16];

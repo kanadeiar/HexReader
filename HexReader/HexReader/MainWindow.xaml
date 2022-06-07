@@ -35,6 +35,14 @@
                     <TextBlock Text="{Binding FileSize}" />
                 </StackPanel>
             </StatusBarItem>
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Скролл: "/>
+                    <TextBlock Text="{Binding ScrollValue}" />
+                    <TextBlock Text="/"/>
+                    <TextBlock Text="{Binding CountLines}" />
+                </StackPanel>
+            </StatusBarItem>
         </StatusBar>
         <TabControl FontSize="14">
             <TabItem Header="Замер скорости обхода дерева" Height="40">
@@ -62,33 +70,34 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <GroupBox Grid.Column="0" Header="Содержимое файла:">
-                            <DataGrid FontFamily="Consolas" FontSize="16" Name="RecordsDataGrid" AutoGenerateColumns="False" RowBackground="LightGreen"
-                                  AlternatingRowBackground="White" SelectionMode="Single" HorizontalGridLinesBrush="Transparent" VerticalGridLinesBrush="Transparent" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled"
+                            <ListView FontSize="16" FontFamily="Consolas" Foreground="Black" Name="RecordsDataGrid" SelectionMode="Single" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                   ItemsSource="{Binding BinaryRecords}">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Width="90" Header="Адрес" Binding="{Binding Number, StringFormat={}{0:00000000}}" />
-                                    <DataGridTextColumn Width="28" Header="0" Binding="{Binding HexCodes[0]}" />
-                                    <DataGridTextColumn Width="28" Header="1" Binding="{Binding HexCodes[1], StringFormat={}{0:X2}}" />
-                                    <DataGridTextColumn Width="28" Header="2" Binding="{Binding HexCodes[2], StringFormat={}{0:X2}}" />
-                                    <DataGridTextColumn Width="28" Header="3" Binding="{Binding HexCodes[3], StringFormat={}{0:X2}}" />
-                                    <DataGridTextColumn Width="28" Header="4" Binding="{Binding HexCodes[4], StringFormat={}{0:X2}}" />
-                                    <DataGridTextColumn Width="28" Header="5" Binding="{Binding HexCodes[5], StringFormat={}{0:X2}}" />
-                                    <DataGridTextColumn Width="28" Header="6" Binding="{Binding HexCodes[6], StringFormat={}{0:X2}}" />
-                                    <DataGridTextColumn Width="28" Header="7" Binding="{Binding HexCodes[7], StringFormat={}{0:X2}}" />
-                                    <DataGridTextColumn Width="28" Header="8" Binding="{Binding HexCodes[8], StringFormat={}{0:X2}}" />
-                                    <DataGridTextColumn Width="28" Header="9" Binding="{Binding HexCodes[9], StringFormat={}{0:X2}}" />
-                                    <DataGridTextColumn Width="28" Header="a" Binding="{Binding HexCodes[10], StringFormat={}{0:X2}}" />
-                                    <DataGridTextColumn Width="28" Header="b" Binding="{Binding HexCodes[11], StringFormat={}{0:X2}}" />
-                                    <DataGridTextColumn Width="28" Header="c" Binding="{Binding HexCodes[12], StringFormat={}{0:X2}}" />
-                                    <DataGridTextColumn Width="28" Header="d" Binding="{Binding HexCodes[13], StringFormat={}{0:X2}}" />
-                                    <DataGridTextColumn Width="28" Header="e" Binding="{Binding HexCodes[14], StringFormat={}{0:X2}}" />
-                                    <DataGridTextColumn Width="28" Header="f" Binding="{Binding HexCodes[15], StringFormat={}{0:X2}}" />
-                                    <DataGridTextColumn Width="*" Header="Дамп" Binding="{Binding Dump}"></DataGridTextColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Адрес" DisplayMemberBinding="{Binding Number}" Width="90" />
+                                        <GridViewColumn Header="0" DisplayMemberBinding="{Binding HexCodes[0]}" Width="30" />
+                                        <GridViewColumn Header="1" DisplayMemberBinding="{Binding HexCodes[1]}" Width="30" />
+                                        <GridViewColumn Header="2" DisplayMemberBinding="{Binding HexCodes[2]}" Width="30" />
+                                        <GridViewColumn Header="3" DisplayMemberBinding="{Binding HexCodes[3]}" Width="30" />
+                                        <GridViewColumn Header="4" DisplayMemberBinding="{Binding HexCodes[4]}" Width="30" />
+                                        <GridViewColumn Header="5" DisplayMemberBinding="{Binding HexCodes[5]}" Width="30" />
+                                        <GridViewColumn Header="6" DisplayMemberBinding="{Binding HexCodes[6]}" Width="30" />
+                                        <GridViewColumn Header="7" DisplayMemberBinding="{Binding HexCodes[7]}" Width="30" />
+                                        <GridViewColumn Header="8" DisplayMemberBinding="{Binding HexCodes[8]}" Width="30" />
+                                        <GridViewColumn Header="9" DisplayMemberBinding="{Binding HexCodes[9]}" Width="30" />
+                                        <GridViewColumn Header="a" DisplayMemberBinding="{Binding HexCodes[10]}" Width="30" />
+                                        <GridViewColumn Header="b" DisplayMemberBinding="{Binding HexCodes[11]}" Width="30" />
+                                        <GridViewColumn Header="c" DisplayMemberBinding="{Binding HexCodes[12]}" Width="30" />
+                                        <GridViewColumn Header="d" DisplayMemberBinding="{Binding HexCodes[13]}" Width="30" />
+                                        <GridViewColumn Header="e" DisplayMemberBinding="{Binding HexCodes[14]}" Width="30" />
+                                        <GridViewColumn Header="f" DisplayMemberBinding="{Binding HexCodes[15]}" Width="30" />
+                                        <GridViewColumn Header="Дамп" DisplayMemberBinding="{Binding Dump}" Width="Auto" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
                         </GroupBox>
-                        <ScrollBar Grid.Column="1" Orientation="Vertical" Minimum="0" Maximum="10" Width="30" Cursor="Hand" 
-                                   />
+                        <ScrollBar Name="MainScollBar" Grid.Column="1" Orientation="Vertical" Minimum="0" Maximum="{Binding CountLines}" Width="30" Cursor="Hand" 
+                                   Scroll="MainScollBar_Scroll" Value="{Binding ScrollValue}"  ViewportSize="40"/>
                     </Grid>
                 </Grid>
             </TabItem>

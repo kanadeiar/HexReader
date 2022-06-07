@@ -1,7 +1,4 @@
-﻿using HexReader.CoreDomain.Models;
-using Microsoft.Win32;
-
-namespace HexReader.Infrastructure.ViewModels;
+﻿namespace HexReader.Infrastructure.ViewModels;
 
 public class MainWindowViewModel : ViewModel
 {
@@ -36,12 +33,28 @@ public class MainWindowViewModel : ViewModel
         set => Set(ref _FileSize, value);
     }
 
-
     private string _FileName;
     public string FileName
     {
         get => _FileName;
         set => Set(ref _FileName, value);
+    }
+
+    private long _ScrollValue;
+    public long ScrollValue
+    {
+        get => _ScrollValue;
+        set
+        {
+            if (Set(ref _ScrollValue, value))
+            {
+                if (IsRefreshes)
+                {
+                    return;
+                }
+                Task.Run(() => Refresh(Convert.ToInt32(ScrollValue)));
+            }
+        }
     }
 
 
@@ -57,16 +70,7 @@ public class MainWindowViewModel : ViewModel
 
     public MainWindowViewModel(IGetDataService getDataService)
     {
-        _getDataService = getDataService;
-        //try
-        //{
-        //    Refresh(0);
-        //}
-        //catch (Exception ex)
-        //{
-        //    MessageBox.Show($"Ошибка обновления данных: {ex.Message}", "Ошибка");
-        //    throw;
-        //}        
+        _getDataService = getDataService;      
     }
 
     #region Commands
@@ -92,7 +96,7 @@ public class MainWindowViewModel : ViewModel
                         CountLines++;
                     FileName = openFileDialog.FileName;
                     Offset = "0";
-                    Refresh(0);
+                    Refresh(Convert.ToInt32(ScrollValue));
                 }
                 else
                 {
@@ -111,13 +115,17 @@ public class MainWindowViewModel : ViewModel
     /// <summary> Перейти по указанному смещению </summary>
     public ICommand GoToOffsetCommand => _GoToOffsetCommand ??=
         new LambdaCommand(OnGoToOffsetCommandExecuted, CanGoToOffsetCommand);
-    private bool CanGoToOffsetCommand(object p) => int.TryParse((string)p, out _);
+    private bool CanGoToOffsetCommand(object p) => FileName != default && int.TryParse((string)p, out _);
     private void OnGoToOffsetCommandExecuted(object p)
     {
         var offset = int.Parse((string)p);
         if (offset < 0)
         {
             MessageBox.Show("Значение смещения нужно указывать положительным числом");
+            return;
+        }
+        if (IsRefreshes)
+        {
             return;
         }
         try
@@ -135,9 +143,13 @@ public class MainWindowViewModel : ViewModel
     /// <summary> Перейти на начальную позицию </summary>
     public ICommand GoToStartCommand => _GoToStartCommand ??=
         new LambdaCommand(OnGoToStartCommandExecuted, CanGoToStartCommand);
-    private bool CanGoToStartCommand(object p) => true;
+    private bool CanGoToStartCommand(object p) => FileName != default;
     private void OnGoToStartCommandExecuted(object p)
     {
+        if (IsRefreshes)
+        {
+            return;
+        }
         try
         {
             Refresh(0);
@@ -174,14 +186,21 @@ public class MainWindowViewModel : ViewModel
 
     #region Support
 
+    private bool IsRefreshes;
     private void Refresh(int offset)
     {
-        BinaryRecords.Clear();
+        IsRefreshes = true;
         var data = _getDataService.GetLinesDataFromFile(FileName, offset);
-        foreach (var item in data)
-        {
-            BinaryRecords.Add(item);
-        }
+
+        App.Current.Dispatcher.Invoke(() => {
+            BinaryRecords.Clear();
+            foreach (var item in data)
+            {
+                BinaryRecords.Add(item);
+            }
+        });
+
+        IsRefreshes = false;
     }
 
     #endregion
