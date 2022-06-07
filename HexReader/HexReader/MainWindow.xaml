@@ -11,6 +11,9 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Главное меню">
+                <MenuItem Header="Открыть файл"
+                          Command="{Binding OpenFileCommand}"/>
+                <Separator/>
                 <MenuItem Header="Выход" 
                           Command="{Binding CloseAppCommand}"/>
             </MenuItem>
@@ -21,7 +24,16 @@
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
-                <TextBlock Text="Информация по приложению"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Имя файла: "/>
+                    <TextBlock Text="{Binding FileName}" />
+                </StackPanel>
+            </StatusBarItem>
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Размер файла: "/>
+                    <TextBlock Text="{Binding FileSize}" />
+                </StackPanel>
             </StatusBarItem>
         </StatusBar>
         <TabControl FontSize="14">
@@ -55,7 +67,7 @@
                                   ItemsSource="{Binding BinaryRecords}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="90" Header="Адрес" Binding="{Binding Number, StringFormat={}{0:00000000}}" />
-                                    <DataGridTextColumn Width="28" Header="0" Binding="{Binding HexCodes[0], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="0" Binding="{Binding HexCodes[0]}" />
                                     <DataGridTextColumn Width="28" Header="1" Binding="{Binding HexCodes[1], StringFormat={}{0:X2}}" />
                                     <DataGridTextColumn Width="28" Header="2" Binding="{Binding HexCodes[2], StringFormat={}{0:X2}}" />
                                     <DataGridTextColumn Width="28" Header="3" Binding="{Binding HexCodes[3], StringFormat={}{0:X2}}" />
@@ -75,7 +87,7 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                         </GroupBox>
-                        <ScrollBar Grid.Column="1" Orientation="Vertical" Minimum="0" Maximum="100" Width="30" Cursor="Hand" 
+                        <ScrollBar Grid.Column="1" Orientation="Vertical" Minimum="0" Maximum="10" Width="30" Cursor="Hand" 
                                    />
                     </Grid>
                 </Grid>

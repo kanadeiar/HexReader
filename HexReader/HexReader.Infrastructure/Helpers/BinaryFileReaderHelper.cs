@@ -9,7 +9,7 @@ public class BinaryFileReaderHelper : IFileReaderHelper
             throw new ArgumentOutOfRangeException(nameof(offset), "Смещение в файле не может быть меньше ноля");
         }
         var data = new byte[count][];
-        using (FileStream fstream = new FileStream(filename, FileMode.Open))
+        using (var fstream = new FileStream(filename, FileMode.Open))
         {
             fstream.Seek(offset * 16, SeekOrigin.Begin);
             var i = 0;
@@ -21,5 +21,17 @@ public class BinaryFileReaderHelper : IFileReaderHelper
             }
         }
         return data;
+    }
+
+    public (bool exists, long size) GetFileInfo(string filename)
+    {
+        if (File.Exists(filename))
+        {
+            using (var fstream = new FileStream(filename, FileMode.Open))
+            {
+                return (true, fstream.Length);
+            }
+        }
+        throw new FileNotFoundException("Файл не существует: " + filename);
     }
 }

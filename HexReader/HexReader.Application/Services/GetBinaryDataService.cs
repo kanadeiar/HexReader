@@ -12,7 +12,7 @@ public class GetBinaryDataService : IGetDataService
 
     public IEnumerable<BinaryRecord> GetLinesDataFromFile(string filename, int offset)
     {
-        var lines = _readerService.ReadBinaryLinesWithOffset(filename, offset, 80);
+        var lines = _readerService.ReadBinaryLinesWithOffset(filename, offset, 60);
         var sb16 = new StringBuilder(16);
         var list = lines.Where(x => x is { }).Select((x, i) => new BinaryRecord
         {
@@ -22,6 +22,12 @@ public class GetBinaryDataService : IGetDataService
             Dump = GetDumpFromHexCodes(x, sb16),
         }).ToList();
         return list;
+    }
+
+    public long GetFileCountLines(string filename)
+    {
+        var (exists, size) = _readerService.GetFileInfo(filename);
+        return exists ? size : 0;
     }
 
     private string GetDumpFromHexCodes(byte[] bytes, StringBuilder sb)

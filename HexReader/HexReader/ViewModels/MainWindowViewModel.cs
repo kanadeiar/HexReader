@@ -1,4 +1,5 @@
 ﻿using HexReader.CoreDomain.Models;
+using Microsoft.Win32;
 
 namespace HexReader.Infrastructure.ViewModels;
 
@@ -21,6 +22,28 @@ public class MainWindowViewModel : ViewModel
         set => Set(ref _Offset, value);
     }
 
+    private long _CountLines;
+    public long CountLines
+    {
+        get => _CountLines;
+        set => Set(ref _CountLines, value);
+    }
+
+    private long _FileSize;
+    public long FileSize
+    {
+        get => _FileSize;
+        set => Set(ref _FileSize, value);
+    }
+
+
+    private string _FileName;
+    public string FileName
+    {
+        get => _FileName;
+        set => Set(ref _FileName, value);
+    }
+
 
     private string _Title = "Приложение чтения файлов в бинарном виде";
     /// <summary> Заголовок </summary>
@@ -35,11 +58,54 @@ public class MainWindowViewModel : ViewModel
     public MainWindowViewModel(IGetDataService getDataService)
     {
         _getDataService = getDataService;
-
-        Refresh(0);
+        //try
+        //{
+        //    Refresh(0);
+        //}
+        //catch (Exception ex)
+        //{
+        //    MessageBox.Show($"Ошибка обновления данных: {ex.Message}", "Ошибка");
+        //    throw;
+        //}        
     }
 
     #region Commands
+
+    private ICommand? _OpenFileCommand;
+    /// <summary> Открыть файл для чтения </summary>
+    public ICommand OpenFileCommand => _OpenFileCommand ??=
+        new LambdaCommand(OnOpenFileCommandExecuted, CanOpenFileCommand);
+    private bool CanOpenFileCommand(object p) => true;
+    private void OnOpenFileCommandExecuted(object p)
+    {
+        var openFileDialog = new OpenFileDialog();
+        if (openFileDialog.ShowDialog() == true)
+        {
+            try
+            {
+                var count = _getDataService.GetFileCountLines(openFileDialog.FileName);
+                if (count > 0)
+                {
+                    FileSize = count;
+                    CountLines = count / 16;
+                    if (count % 16 > 0)
+                        CountLines++;
+                    FileName = openFileDialog.FileName;
+                    Offset = "0";
+                    Refresh(0);
+                }
+                else
+                {
+                    MessageBox.Show("Пустой файл");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Не удалось открыть файл, ошибка: {ex.Message}", "Ошибка отрытия файла");
+                throw;
+            }
+        }
+    }
 
     private ICommand? _GoToOffsetCommand;
     /// <summary> Перейти по указанному смещению </summary>
@@ -54,7 +120,15 @@ public class MainWindowViewModel : ViewModel
             MessageBox.Show("Значение смещения нужно указывать положительным числом");
             return;
         }
-        Refresh(offset);
+        try
+        {
+            Refresh(offset);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Ошибка обновления данных: {ex.Message}", "Ошибка");
+            throw;
+        }        
     }
 
     private ICommand? _GoToStartCommand;
@@ -64,7 +138,15 @@ public class MainWindowViewModel : ViewModel
     private bool CanGoToStartCommand(object p) => true;
     private void OnGoToStartCommandExecuted(object p)
     {
-        Refresh(0);
+        try
+        {
+            Refresh(0);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Ошибка обновления данных: {ex.Message}", "Ошибка");
+            throw;
+        }
     }
 
     private ICommand? _CloseAppCommand;
@@ -95,7 +177,7 @@ public class MainWindowViewModel : ViewModel
     private void Refresh(int offset)
     {
         BinaryRecords.Clear();
-        var data = _getDataService.GetLinesDataFromFile("test2.dat", offset);
+        var data = _getDataService.GetLinesDataFromFile(FileName, offset);
         foreach (var item in data)
         {
             BinaryRecords.Add(item);
