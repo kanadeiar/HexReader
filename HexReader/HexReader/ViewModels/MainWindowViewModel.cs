@@ -121,7 +121,7 @@ public class MainWindowViewModel : ViewModel
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Не удалось открыть файл, ошибка: {ex.Message}", "Ошибка отрытия файла");
+                MessageBox.Show($"Не удалось открыть файл или ошибка обработки данных, ошибка: {ex.Message}", "Ошибка отрытия файла");
                 throw;
             }
         }
@@ -142,11 +142,7 @@ public class MainWindowViewModel : ViewModel
             MessageBox.Show("Значение смещения нужно указывать положительным числом");
             return;
         }
-        if (isRefreshes)
-        {
-            return;
-        }
-        Refresh(offset);      
+        ScrollValue = offset;
     }
 
     private ICommand? _GoToStartCommand;
@@ -162,7 +158,15 @@ public class MainWindowViewModel : ViewModel
         {
             return;
         }
-        Refresh(0);
+        try
+        {
+            Refresh(0);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Ошибка обновления данных в приложении {ex.Message}", "Ошибка обновления");
+            throw;
+        }
     }
 
     private ICommand? _CloseAppCommand;

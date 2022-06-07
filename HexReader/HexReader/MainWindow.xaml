@@ -59,7 +59,7 @@
                             </TextBox>
                             <Button VerticalAlignment="Center" Padding="10" Margin="10,0" Cursor="Hand"
                                     Command="{Binding GoToOffsetCommand}"
-                                    CommandParameter="{Binding Offset}">Перейти</Button>
+                                    CommandParameter="{Binding InputOffset}">Перейти</Button>
                             <Button VerticalAlignment="Center" Padding="10" Margin="10,0" Cursor="Hand"
                                     Command="{Binding GoToStartCommand}">На начало</Button>
                         </StackPanel>

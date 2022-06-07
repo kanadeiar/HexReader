@@ -21,13 +21,4 @@
     <ProjectReference Include="..\HexReader.Infrastructure\HexReader.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="test.dat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="test2.dat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
