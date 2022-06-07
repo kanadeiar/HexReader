@@ -8,6 +8,8 @@ public class MainWindowViewModel : ViewModel
 
     #region Properties
 
+    public ObservableCollection<BinaryRecord> BinaryRecords { get; } = new();
+
     private string _Title = "Приложение чтения файлов в бинарном виде";
     /// <summary> Заголовок </summary>
     public string Title
@@ -21,6 +23,7 @@ public class MainWindowViewModel : ViewModel
     public MainWindowViewModel()
     {
 
+        Refresh();
     }
 
     #region Commands
@@ -50,7 +53,21 @@ public class MainWindowViewModel : ViewModel
 
     #region Support
 
-
+    private void Refresh()
+    {
+        BinaryRecords.Clear();
+        var tests = Enumerable.Range(1, 4).Select(x => new BinaryRecord
+        {
+            Id = x,
+            Number = (x - 1) * 10,
+            HexCodes = new int[] { 54, 65, 73, 74, 54, 65, 73, 74, 54, 65, 73, 74, 54, 65, 73, 74 },
+            Dump = "TestTestTestTest",
+        }).ToArray();
+        foreach (var item in tests)
+        {
+            BinaryRecords.Add(item);
+        }
+    }
 
     #endregion
 }

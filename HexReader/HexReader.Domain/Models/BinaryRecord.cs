@@ -5,33 +5,33 @@
 /// </summary>
 public class BinaryRecord : Base.BaseModel
 {
-    private int _Number;
+    private long _Number;
     /// <summary>
     /// Номер строки
     /// </summary>
-    public int Number
+    public long Number
     {
         get => _Number;
         set => Set(ref _Number, value);
     }
 
-    private string _HexCodes;
+    private int[] _HexCodes;
     /// <summary>
-    /// Коды сивололов
+    /// Коды символов 16 байт
     /// </summary>
-    public string HexCodes
+    public int[] HexCodes
     {
         get => _HexCodes;
         set => Set(ref _HexCodes, value);
     }
 
-    private string _Text;
+    private string _Dump;
     /// <summary>
     /// Символы
     /// </summary>
-    public string Text
+    public string Dump
     {
-        get => _Text;
-        set => Set(ref _Text, value);
+        get => _Dump;
+        set => Set(ref _Dump, value);
     }
 }
