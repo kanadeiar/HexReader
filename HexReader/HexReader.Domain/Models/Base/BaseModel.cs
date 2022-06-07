@@ -1,4 +1,4 @@
-﻿namespace HexReader.Domain.Models.Base;
+﻿namespace HexReader.CoreDomain.Models.Base;
 
 /// <summary>
 /// Базовая сущность
@@ -8,7 +8,7 @@ public abstract class BaseModel : INotifyPropertyChanged
     /// <summary>
     /// Идентификатор
     /// </summary>
-    public int Id { get; set; }    
+    public int Id { get; set; }
     /// <summary>
     /// Событие-изменение элемента
     /// </summary>

@@ -1,8 +1,12 @@
-﻿namespace HexReader.Infrastructure.ViewModels;
+﻿using HexReader.CoreDomain.Models;
+
+namespace HexReader.Infrastructure.ViewModels;
 
 public class MainWindowViewModel : ViewModel
 {
     #region Data
+
+    private readonly IGetDataService _getDataService;
 
     #endregion
 
@@ -20,8 +24,9 @@ public class MainWindowViewModel : ViewModel
 
     #endregion
 
-    public MainWindowViewModel()
+    public MainWindowViewModel(IGetDataService getDataService)
     {
+        _getDataService = getDataService;
 
         Refresh();
     }
@@ -56,14 +61,8 @@ public class MainWindowViewModel : ViewModel
     private void Refresh()
     {
         BinaryRecords.Clear();
-        var tests = Enumerable.Range(1, 4).Select(x => new BinaryRecord
-        {
-            Id = x,
-            Number = (x - 1) * 10,
-            HexCodes = new int[] { 54, 65, 73, 74, 54, 65, 73, 74, 54, 65, 73, 74, 54, 65, 73, 74 },
-            Dump = "TestTestTestTest",
-        }).ToArray();
-        foreach (var item in tests)
+        var data = _getDataService.GetLinesDataFromFile("test2.dat", 0);
+        foreach (var item in data)
         {
             BinaryRecords.Add(item);
         }

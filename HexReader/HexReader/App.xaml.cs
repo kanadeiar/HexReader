@@ -1,4 +1,6 @@
-﻿namespace HexReader;
+﻿using System.Text;
+
+namespace HexReader;
 
 public partial class App : Application
 {
@@ -14,7 +16,10 @@ public partial class App : Application
     {
         services.AddScoped<MainWindowViewModel>();
 
+        services.AddScoped<IFileReaderHelper, BinaryFileReaderHelper>();
+        services.AddScoped<IGetDataService, GetBinaryDataService>();
 
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
     }
 
     /// <summary> 

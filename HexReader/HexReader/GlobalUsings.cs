@@ -1,5 +1,5 @@
 ﻿global using HexReader.Commands;
-global using HexReader.Domain.Models;
+global using HexReader.CoreDomain.Models;
 global using HexReader.Infrastructure.ViewModels;
 global using HexReader.ViewModels.Base;
 global using HexReader.Windows;
@@ -12,3 +12,6 @@ global using System.Linq;
 global using System.Runtime.CompilerServices;
 global using System.Windows;
 global using System.Windows.Input;
+global using HexReader.CoreApplication.Interfaces;
+global using HexReader.Infrastructure.Helpers;
+global using HexReader.CoreApplication.Services;

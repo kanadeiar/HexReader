@@ -1,9 +1,11 @@
-﻿namespace HexReader.Domain.Models;
+﻿using HexReader.CoreDomain.Models.Base;
+
+namespace HexReader.CoreDomain.Models;
 
 /// <summary>
 /// 16 байт отбражаемых бинарных данных файла
 /// </summary>
-public class BinaryRecord : Base.BaseModel
+public class BinaryRecord : BaseModel
 {
     private long _Number;
     /// <summary>
@@ -15,11 +17,11 @@ public class BinaryRecord : Base.BaseModel
         set => Set(ref _Number, value);
     }
 
-    private int[] _HexCodes;
+    private byte[] _HexCodes;
     /// <summary>
     /// Коды символов 16 байт
     /// </summary>
-    public int[] HexCodes
+    public byte[] HexCodes
     {
         get => _HexCodes;
         set => Set(ref _HexCodes, value);

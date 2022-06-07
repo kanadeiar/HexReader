@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexReader", "HexReader\HexReader.csproj", "{D5AB55EE-E13B-4FF6-8803-312BA27D6249}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HexReader", "HexReader\HexReader.csproj", "{D5AB55EE-E13B-4FF6-8803-312BA27D6249}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexReader.Domain", "HexReader.Domain\HexReader.Domain.csproj", "{9CF6BDF7-347F-41A7-A2C2-0ECD62B5FCEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HexReader.CoreDomain", "HexReader.Domain\HexReader.CoreDomain.csproj", "{9CF6BDF7-347F-41A7-A2C2-0ECD62B5FCEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexReader.Application", "HexReader.Application\HexReader.Application.csproj", "{3DEC83DA-C01C-449C-881B-7D12B305962D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HexReader.CoreApplication", "HexReader.Application\HexReader.CoreApplication.csproj", "{3DEC83DA-C01C-449C-881B-7D12B305962D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexReader.Infrastructure", "HexReader.Infrastructure\HexReader.Infrastructure.csproj", "{924E7457-E8D0-477B-9F5D-FEEF3B9B4DA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HexReader.Infrastructure", "HexReader.Infrastructure\HexReader.Infrastructure.csproj", "{924E7457-E8D0-477B-9F5D-FEEF3B9B4DA9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
