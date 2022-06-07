@@ -1,5 +1,8 @@
 ﻿namespace HexReader.Infrastructure.Helpers;
 
+/// <summary>
+/// Реализация помощника работы с файлом
+/// </summary>
 public class BinaryFileReaderHelper : IFileReaderHelper
 {
     public byte[][] ReadBinaryLinesWithOffset(string filename, long offset, long count)

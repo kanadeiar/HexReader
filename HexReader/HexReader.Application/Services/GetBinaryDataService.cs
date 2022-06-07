@@ -1,5 +1,8 @@
 ﻿namespace HexReader.CoreApplication.Services;
 
+/// <summary>
+/// Базовая реализация сервиса получения данных из файла
+/// </summary>
 public class GetBinaryDataService : IGetDataService
 {
     private readonly IFileReaderHelper _readerService;
@@ -12,7 +15,7 @@ public class GetBinaryDataService : IGetDataService
 
     public IEnumerable<BinaryRecord> GetLinesDataFromFile(string filename, long offset)
     {
-        var lines = _readerService.ReadBinaryLinesWithOffset(filename, offset, 30);
+        var lines = _readerService.ReadBinaryLinesWithOffset(filename, offset, 40);
         var sb16 = new StringBuilder(16);
         var list = lines.Where(x => x is { }).Select((x, i) => new BinaryRecord
         {
@@ -24,7 +27,7 @@ public class GetBinaryDataService : IGetDataService
         return list;
     }
 
-    public long GetFileCountLines(string filename)
+    public long GetFileSize(string filename)
     {
         var (exists, size) = _readerService.GetFileInfo(filename);
         return exists ? size : 0;

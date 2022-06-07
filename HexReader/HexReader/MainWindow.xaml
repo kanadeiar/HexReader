@@ -55,7 +55,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center" Text="Смещение (строки):"/>
                             <TextBox VerticalAlignment="Center" Height="30" Width="200" Margin="10,0,0,0" VerticalContentAlignment="Center"
-                                     Text="{Binding Offset, UpdateSourceTrigger=PropertyChanged}">
+                                     Text="{Binding InputOffset, UpdateSourceTrigger=PropertyChanged}">
                             </TextBox>
                             <Button VerticalAlignment="Center" Padding="10" Margin="10,0" Cursor="Hand"
                                     Command="{Binding GoToOffsetCommand}"
@@ -70,8 +70,8 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <GroupBox Grid.Column="0" Header="Содержимое файла:">
-                            <ListView FontSize="16" FontFamily="Consolas" Foreground="Black" Name="RecordsDataGrid" SelectionMode="Single" ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                  ItemsSource="{Binding BinaryRecords}">
+                            <ListView FontSize="16" FontFamily="Consolas" Foreground="Black" Name="RecordsListView" SelectionMode="Single" ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                  ItemsSource="{Binding BinaryRecords}" PreviewMouseWheel="RecordsListView_PreviewMouseWheel">
                                 <ListView.View>
                                     <GridView>
                                         <GridViewColumn Header="Адрес" DisplayMemberBinding="{Binding Number}" Width="90" />

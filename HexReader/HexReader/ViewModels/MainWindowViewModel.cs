@@ -12,14 +12,20 @@ public class MainWindowViewModel : ViewModel
 
     public ObservableCollection<BinaryRecord> BinaryRecords { get; } = new();
 
-    private string _Offset = "0";
-    public string Offset
+    private string _InputOffset = "0";
+    /// <summary>
+    /// Смещение, задаваемое пользователем
+    /// </summary>
+    public string InputOffset
     {
-        get => _Offset;
-        set => Set(ref _Offset, value);
+        get => _InputOffset;
+        set => Set(ref _InputOffset, value);
     }
 
     private long _CountLines;
+    /// <summary>
+    /// Количество строк в файле
+    /// </summary>
     public long CountLines
     {
         get => _CountLines;
@@ -27,6 +33,9 @@ public class MainWindowViewModel : ViewModel
     }
 
     private long _FileSize;
+    /// <summary>
+    /// Длинна файла
+    /// </summary>
     public long FileSize
     {
         get => _FileSize;
@@ -34,6 +43,9 @@ public class MainWindowViewModel : ViewModel
     }
 
     private string _FileName;
+    /// <summary>
+    /// Имя файла
+    /// </summary>
     public string FileName
     {
         get => _FileName;
@@ -41,6 +53,9 @@ public class MainWindowViewModel : ViewModel
     }
 
     private long _ScrollValue;
+    /// <summary>
+    /// Значение скроллирования файла
+    /// </summary>
     public long ScrollValue
     {
         get => _ScrollValue;
@@ -48,15 +63,14 @@ public class MainWindowViewModel : ViewModel
         {
             if (Set(ref _ScrollValue, value))
             {
-                if (IsRefreshes)
+                if (isRefreshes)
                 {
                     return;
                 }
-                Task.Run(() => Refresh(Convert.ToInt32(ScrollValue)));
+                Refresh(Convert.ToInt32(ScrollValue));
             }
         }
     }
-
 
     private string _Title = "Приложение чтения файлов в бинарном виде";
     /// <summary> Заголовок </summary>
@@ -76,7 +90,9 @@ public class MainWindowViewModel : ViewModel
     #region Commands
 
     private ICommand? _OpenFileCommand;
-    /// <summary> Открыть файл для чтения </summary>
+    /// <summary> 
+    /// Открыть файл для чтения 
+    /// </summary>
     public ICommand OpenFileCommand => _OpenFileCommand ??=
         new LambdaCommand(OnOpenFileCommandExecuted, CanOpenFileCommand);
     private bool CanOpenFileCommand(object p) => true;
@@ -87,7 +103,7 @@ public class MainWindowViewModel : ViewModel
         {
             try
             {
-                var count = _getDataService.GetFileCountLines(openFileDialog.FileName);
+                var count = _getDataService.GetFileSize(openFileDialog.FileName);
                 if (count > 0)
                 {
                     FileSize = count;
@@ -95,7 +111,7 @@ public class MainWindowViewModel : ViewModel
                     if (count % 16 > 0)
                         CountLines++;
                     FileName = openFileDialog.FileName;
-                    Offset = "0";
+                    InputOffset = "0";
                     Refresh(Convert.ToInt32(ScrollValue));
                 }
                 else
@@ -112,7 +128,9 @@ public class MainWindowViewModel : ViewModel
     }
 
     private ICommand? _GoToOffsetCommand;
-    /// <summary> Перейти по указанному смещению </summary>
+    /// <summary> 
+    /// Перейти по указанному смещению 
+    /// </summary>
     public ICommand GoToOffsetCommand => _GoToOffsetCommand ??=
         new LambdaCommand(OnGoToOffsetCommandExecuted, CanGoToOffsetCommand);
     private bool CanGoToOffsetCommand(object p) => FileName != default && int.TryParse((string)p, out _);
@@ -124,45 +142,33 @@ public class MainWindowViewModel : ViewModel
             MessageBox.Show("Значение смещения нужно указывать положительным числом");
             return;
         }
-        if (IsRefreshes)
+        if (isRefreshes)
         {
             return;
         }
-        try
-        {
-            Refresh(offset);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Ошибка обновления данных: {ex.Message}", "Ошибка");
-            throw;
-        }        
+        Refresh(offset);      
     }
 
     private ICommand? _GoToStartCommand;
-    /// <summary> Перейти на начальную позицию </summary>
+    /// <summary> 
+    /// Перейти на начальную позицию 
+    /// </summary>
     public ICommand GoToStartCommand => _GoToStartCommand ??=
         new LambdaCommand(OnGoToStartCommandExecuted, CanGoToStartCommand);
     private bool CanGoToStartCommand(object p) => FileName != default;
     private void OnGoToStartCommandExecuted(object p)
     {
-        if (IsRefreshes)
+        if (isRefreshes)
         {
             return;
         }
-        try
-        {
-            Refresh(0);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Ошибка обновления данных: {ex.Message}", "Ошибка");
-            throw;
-        }
+        Refresh(0);
     }
 
     private ICommand? _CloseAppCommand;
-    /// <summary> Закрыть приложение </summary>
+    /// <summary> 
+    /// Закрыть приложение 
+    /// </summary>
     public ICommand CloseAppCommand => _CloseAppCommand ??=
         new LambdaCommand(OnCloseAppCommandExecuted, CanCloseAppCommandExecute);
     private bool CanCloseAppCommandExecute(object p) => true;
@@ -172,7 +178,9 @@ public class MainWindowViewModel : ViewModel
     }
 
     private ICommand _ShowAboutCommand;
-    /// <summary> Открыть приложение о программе </summary>
+    /// <summary> 
+    /// Открыть приложение о программе 
+    /// </summary>
     public ICommand ShowAboutCommand => _ShowAboutCommand ??=
         new LambdaCommand(OnShowAboutCommandExecuted, CanShowAboutCommandExecute);
     private bool CanShowAboutCommandExecute(object p) => true;
@@ -186,21 +194,25 @@ public class MainWindowViewModel : ViewModel
 
     #region Support
 
-    private bool IsRefreshes;
+    /// <summary>
+    /// Происходит обновление данных
+    /// </summary>
+    private bool isRefreshes;
+
+    /// <summary>
+    /// Обновить данные в приложении
+    /// </summary>
+    /// <param name="offset"></param>
     private void Refresh(int offset)
     {
-        IsRefreshes = true;
+        isRefreshes = true;
         var data = _getDataService.GetLinesDataFromFile(FileName, offset);
-
-        App.Current.Dispatcher.Invoke(() => {
-            BinaryRecords.Clear();
-            foreach (var item in data)
-            {
-                BinaryRecords.Add(item);
-            }
-        });
-
-        IsRefreshes = false;
+        BinaryRecords.Clear();
+        foreach (var item in data)
+        {
+            BinaryRecords.Add(item);
+        }
+        isRefreshes = false;
     }
 
     #endregion
