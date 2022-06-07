@@ -11,7 +11,7 @@ public interface IGetDataService
     /// <param name="filename">Имя файла</param>
     /// <param name="offset">Смещение</param>
     /// <returns>Данные</returns>
-    IEnumerable<BinaryRecord> GetLinesDataFromFile(string filename, long offset);
+    Task<IEnumerable<BinaryRecord>> GetLinesDataFromFileAsync(string filename, long offset);
     
     /// <summary>
     /// Получить размер файла

@@ -12,7 +12,7 @@ public interface IFileReaderHelper
     /// <param name="offset">Смещение строк</param>
     /// <param name="count">Количество строк</param>
     /// <returns>Строки данных</returns>
-    byte[][] ReadBinaryLinesWithOffset(string filename, long offset, long count);
+    Task<byte[][]> ReadBinaryLinesWithOffsetAsync(string filename, long offset, long count);
     
     /// <summary>
     /// Получить информацию о файле

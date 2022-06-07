@@ -5,7 +5,7 @@
 /// </summary>
 public class BinaryFileReaderHelper : IFileReaderHelper
 {
-    public byte[][] ReadBinaryLinesWithOffset(string filename, long offset, long count)
+    public async Task<byte[][]> ReadBinaryLinesWithOffsetAsync(string filename, long offset, long count)
     {
         if (offset < 0)
         {
@@ -19,7 +19,7 @@ public class BinaryFileReaderHelper : IFileReaderHelper
             while (fstream.Position < fstream.Length && i++ < count)
             {
                 byte[] buffer = new byte[16];
-                fstream.Read(buffer, 0, buffer.Length);
+                await fstream.ReadAsync(buffer, 0, buffer.Length);
                 data[i - 1] = buffer;
             }
         }

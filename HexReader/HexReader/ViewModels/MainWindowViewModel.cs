@@ -67,7 +67,7 @@ public class MainWindowViewModel : ViewModel
                 {
                     return;
                 }
-                Refresh(Convert.ToInt32(ScrollValue));
+                Task.Run(async () => await RefreshAsync(Convert.ToInt32(ScrollValue)));
             }
         }
     }
@@ -96,7 +96,7 @@ public class MainWindowViewModel : ViewModel
     public ICommand OpenFileCommand => _OpenFileCommand ??=
         new LambdaCommand(OnOpenFileCommandExecuted, CanOpenFileCommand);
     private bool CanOpenFileCommand(object p) => true;
-    private void OnOpenFileCommandExecuted(object p)
+    private async void OnOpenFileCommandExecuted(object p)
     {
         var openFileDialog = new OpenFileDialog();
         if (openFileDialog.ShowDialog() == true)
@@ -112,7 +112,7 @@ public class MainWindowViewModel : ViewModel
                         CountLines++;
                     FileName = openFileDialog.FileName;
                     InputOffset = "0";
-                    Refresh(Convert.ToInt32(ScrollValue));
+                    await RefreshAsync(Convert.ToInt32(ScrollValue));
                 }
                 else
                 {
@@ -152,7 +152,7 @@ public class MainWindowViewModel : ViewModel
     public ICommand GoToStartCommand => _GoToStartCommand ??=
         new LambdaCommand(OnGoToStartCommandExecuted, CanGoToStartCommand);
     private bool CanGoToStartCommand(object p) => FileName != default;
-    private void OnGoToStartCommandExecuted(object p)
+    private async void OnGoToStartCommandExecuted(object p)
     {
         if (isRefreshes)
         {
@@ -160,7 +160,7 @@ public class MainWindowViewModel : ViewModel
         }
         try
         {
-            Refresh(0);
+            await RefreshAsync(0);
         }
         catch (Exception ex)
         {
@@ -207,15 +207,17 @@ public class MainWindowViewModel : ViewModel
     /// Обновить данные в приложении
     /// </summary>
     /// <param name="offset"></param>
-    private void Refresh(int offset)
+    private async Task RefreshAsync(int offset)
     {
         isRefreshes = true;
-        var data = _getDataService.GetLinesDataFromFile(FileName, offset);
-        BinaryRecords.Clear();
-        foreach (var item in data)
-        {
-            BinaryRecords.Add(item);
-        }
+        var data = await _getDataService.GetLinesDataFromFileAsync(FileName, offset);
+        App.Current.Dispatcher.Invoke(() => {
+            BinaryRecords.Clear();
+            foreach (var item in data)
+            {
+                BinaryRecords.Add(item);
+            }
+        });
         isRefreshes = false;
     }
 
