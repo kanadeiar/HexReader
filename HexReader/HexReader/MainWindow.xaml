@@ -33,40 +33,51 @@
                     </Grid.RowDefinitions>
                     <GroupBox Grid.Row="0" Header="Переход по файлу">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="Смещение:"/>
-                            <TextBox VerticalAlignment="Center" Height="30" Width="200" Margin="10,0,0,0">
+                            <TextBlock VerticalAlignment="Center" Text="Смещение (строки):"/>
+                            <TextBox VerticalAlignment="Center" Height="30" Width="200" Margin="10,0,0,0" VerticalContentAlignment="Center"
+                                     Text="{Binding Offset, UpdateSourceTrigger=PropertyChanged}">
                             </TextBox>
                             <Button VerticalAlignment="Center" Padding="10" Margin="10,0" Cursor="Hand"
-                                    >Перейти</Button>
+                                    Command="{Binding GoToOffsetCommand}"
+                                    CommandParameter="{Binding Offset}">Перейти</Button>
+                            <Button VerticalAlignment="Center" Padding="10" Margin="10,0" Cursor="Hand"
+                                    Command="{Binding GoToStartCommand}">На начало</Button>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Grid.Row="1" Header="Содержимое файла:">
-                        <DataGrid FontFamily="Consolas" FontSize="16" Name="RecordsDataGrid" AutoGenerateColumns="False" RowBackground="LightGreen" AlternatingRowBackground="White" SelectionMode="Single"
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Grid.Column="0" Header="Содержимое файла:">
+                            <DataGrid FontFamily="Consolas" FontSize="16" Name="RecordsDataGrid" AutoGenerateColumns="False" RowBackground="LightGreen"
+                                  AlternatingRowBackground="White" SelectionMode="Single" HorizontalGridLinesBrush="Transparent" VerticalGridLinesBrush="Transparent" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled"
                                   ItemsSource="{Binding BinaryRecords}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Width="90" Header="Адрес" Binding="{Binding Number, StringFormat={}{0:00000000}}" />
-                                <DataGridTextColumn Width="28" Header="0" Binding="{Binding HexCodes[0], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="28" Header="1" Binding="{Binding HexCodes[1], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="28" Header="2" Binding="{Binding HexCodes[2], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="28" Header="3" Binding="{Binding HexCodes[3], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="28" Header="4" Binding="{Binding HexCodes[4], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="28" Header="5" Binding="{Binding HexCodes[5], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="28" Header="6" Binding="{Binding HexCodes[6], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="28" Header="7" Binding="{Binding HexCodes[7], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="28" Header="8" Binding="{Binding HexCodes[8], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="28" Header="9" Binding="{Binding HexCodes[9], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="28" Header="a" Binding="{Binding HexCodes[10], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="28" Header="b" Binding="{Binding HexCodes[11], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="28" Header="c" Binding="{Binding HexCodes[12], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="28" Header="d" Binding="{Binding HexCodes[13], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="28" Header="e" Binding="{Binding HexCodes[14], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="28" Header="f" Binding="{Binding HexCodes[15], StringFormat={}{0:X2}}" />
-                                <DataGridTextColumn Width="*" Header="Дамп" Binding="{Binding Dump}"></DataGridTextColumn>
-                            </DataGrid.Columns>
-                            
-                        </DataGrid>
-
-                    </GroupBox>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Width="90" Header="Адрес" Binding="{Binding Number, StringFormat={}{0:00000000}}" />
+                                    <DataGridTextColumn Width="28" Header="0" Binding="{Binding HexCodes[0], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="1" Binding="{Binding HexCodes[1], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="2" Binding="{Binding HexCodes[2], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="3" Binding="{Binding HexCodes[3], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="4" Binding="{Binding HexCodes[4], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="5" Binding="{Binding HexCodes[5], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="6" Binding="{Binding HexCodes[6], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="7" Binding="{Binding HexCodes[7], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="8" Binding="{Binding HexCodes[8], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="9" Binding="{Binding HexCodes[9], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="a" Binding="{Binding HexCodes[10], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="b" Binding="{Binding HexCodes[11], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="c" Binding="{Binding HexCodes[12], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="d" Binding="{Binding HexCodes[13], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="e" Binding="{Binding HexCodes[14], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="28" Header="f" Binding="{Binding HexCodes[15], StringFormat={}{0:X2}}" />
+                                    <DataGridTextColumn Width="*" Header="Дамп" Binding="{Binding Dump}"></DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </GroupBox>
+                        <ScrollBar Grid.Column="1" Orientation="Vertical" Minimum="0" Maximum="100" Width="30" Cursor="Hand" 
+                                   />
+                    </Grid>
                 </Grid>
             </TabItem>
         </TabControl>

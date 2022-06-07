@@ -12,12 +12,12 @@ public class GetBinaryDataService : IGetDataService
 
     public IEnumerable<BinaryRecord> GetLinesDataFromFile(string filename, int offset)
     {
-        var lines = _readerService.ReadBinaryLinesWithOffset(filename, offset - 20, 60);
+        var lines = _readerService.ReadBinaryLinesWithOffset(filename, offset, 80);
         var sb16 = new StringBuilder(16);
         var list = lines.Where(x => x is { }).Select((x, i) => new BinaryRecord
         {
             Id = i,
-            Number = i * 10,
+            Number = (i + offset) * 10,
             HexCodes = x,
             Dump = GetDumpFromHexCodes(x, sb16),
         }).ToList();

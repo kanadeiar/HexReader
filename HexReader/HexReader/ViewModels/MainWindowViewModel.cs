@@ -14,6 +14,14 @@ public class MainWindowViewModel : ViewModel
 
     public ObservableCollection<BinaryRecord> BinaryRecords { get; } = new();
 
+    private string _Offset = "0";
+    public string Offset
+    {
+        get => _Offset;
+        set => Set(ref _Offset, value);
+    }
+
+
     private string _Title = "Приложение чтения файлов в бинарном виде";
     /// <summary> Заголовок </summary>
     public string Title
@@ -28,10 +36,36 @@ public class MainWindowViewModel : ViewModel
     {
         _getDataService = getDataService;
 
-        Refresh();
+        Refresh(0);
     }
 
     #region Commands
+
+    private ICommand? _GoToOffsetCommand;
+    /// <summary> Перейти по указанному смещению </summary>
+    public ICommand GoToOffsetCommand => _GoToOffsetCommand ??=
+        new LambdaCommand(OnGoToOffsetCommandExecuted, CanGoToOffsetCommand);
+    private bool CanGoToOffsetCommand(object p) => int.TryParse((string)p, out _);
+    private void OnGoToOffsetCommandExecuted(object p)
+    {
+        var offset = int.Parse((string)p);
+        if (offset < 0)
+        {
+            MessageBox.Show("Значение смещения нужно указывать положительным числом");
+            return;
+        }
+        Refresh(offset);
+    }
+
+    private ICommand? _GoToStartCommand;
+    /// <summary> Перейти на начальную позицию </summary>
+    public ICommand GoToStartCommand => _GoToStartCommand ??=
+        new LambdaCommand(OnGoToStartCommandExecuted, CanGoToStartCommand);
+    private bool CanGoToStartCommand(object p) => true;
+    private void OnGoToStartCommandExecuted(object p)
+    {
+        Refresh(0);
+    }
 
     private ICommand? _CloseAppCommand;
     /// <summary> Закрыть приложение </summary>
@@ -58,10 +92,10 @@ public class MainWindowViewModel : ViewModel
 
     #region Support
 
-    private void Refresh()
+    private void Refresh(int offset)
     {
         BinaryRecords.Clear();
-        var data = _getDataService.GetLinesDataFromFile("test2.dat", 0);
+        var data = _getDataService.GetLinesDataFromFile("test2.dat", offset);
         foreach (var item in data)
         {
             BinaryRecords.Add(item);

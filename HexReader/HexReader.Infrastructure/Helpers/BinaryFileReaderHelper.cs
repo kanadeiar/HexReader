@@ -1,18 +1,16 @@
-﻿using HexReader.CoreApplication.Interfaces;
-
-namespace HexReader.Infrastructure.Helpers;
+﻿namespace HexReader.Infrastructure.Helpers;
 
 public class BinaryFileReaderHelper : IFileReaderHelper
 {
     public byte[][] ReadBinaryLinesWithOffset(string filename, int offset, int count)
     {
+        if (offset < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(offset), "Смещение в файле не может быть меньше ноля");
+        }
         var data = new byte[count][];
         using (FileStream fstream = new FileStream(filename, FileMode.Open))
         {
-            if (offset < 0)
-            {
-                offset = 0;
-            }
             fstream.Seek(offset * 16, SeekOrigin.Begin);
             var i = 0;
             while (fstream.Position < fstream.Length && i++ < count)
