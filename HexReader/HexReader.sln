@@ -5,6 +5,12 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexReader", "HexReader\HexReader.csproj", "{D5AB55EE-E13B-4FF6-8803-312BA27D6249}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexReader.Domain", "HexReader.Domain\HexReader.Domain.csproj", "{9CF6BDF7-347F-41A7-A2C2-0ECD62B5FCEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexReader.Application", "HexReader.Application\HexReader.Application.csproj", "{3DEC83DA-C01C-449C-881B-7D12B305962D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexReader.Infrastructure", "HexReader.Infrastructure\HexReader.Infrastructure.csproj", "{924E7457-E8D0-477B-9F5D-FEEF3B9B4DA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{D5AB55EE-E13B-4FF6-8803-312BA27D6249}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5AB55EE-E13B-4FF6-8803-312BA27D6249}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5AB55EE-E13B-4FF6-8803-312BA27D6249}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CF6BDF7-347F-41A7-A2C2-0ECD62B5FCEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CF6BDF7-347F-41A7-A2C2-0ECD62B5FCEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CF6BDF7-347F-41A7-A2C2-0ECD62B5FCEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CF6BDF7-347F-41A7-A2C2-0ECD62B5FCEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DEC83DA-C01C-449C-881B-7D12B305962D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DEC83DA-C01C-449C-881B-7D12B305962D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DEC83DA-C01C-449C-881B-7D12B305962D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DEC83DA-C01C-449C-881B-7D12B305962D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{924E7457-E8D0-477B-9F5D-FEEF3B9B4DA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{924E7457-E8D0-477B-9F5D-FEEF3B9B4DA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{924E7457-E8D0-477B-9F5D-FEEF3B9B4DA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{924E7457-E8D0-477B-9F5D-FEEF3B9B4DA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
