@@ -25,19 +25,19 @@
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Имя файла: "/>
+                    <TextBlock Text="Путь и имя открытого файла: "/>
                     <TextBlock Text="{Binding FileName}" />
                 </StackPanel>
             </StatusBarItem>
             <StatusBarItem>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Размер файла: "/>
+                    <TextBlock Text="Размер файла (байт): "/>
                     <TextBlock Text="{Binding FileSize}" />
                 </StackPanel>
             </StatusBarItem>
             <StatusBarItem>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Скролл: "/>
+                    <TextBlock Text="Скролл (строка/всего): "/>
                     <TextBlock Text="{Binding ScrollValue}" />
                     <TextBlock Text="/"/>
                     <TextBlock Text="{Binding CountLines}" />
@@ -45,7 +45,7 @@
             </StatusBarItem>
         </StatusBar>
         <TabControl FontSize="14">
-            <TabItem Header="Замер скорости обхода дерева" Height="40">
+            <TabItem Header="Просмотр файла в бинарном виде" Height="40">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -53,14 +53,14 @@
                     </Grid.RowDefinitions>
                     <GroupBox Grid.Row="0" Header="Переход по файлу">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="Смещение (строки):"/>
+                            <TextBlock VerticalAlignment="Center" Text="Смещение (номер строки):"/>
                             <TextBox VerticalAlignment="Center" Height="30" Width="200" Margin="10,0,0,0" VerticalContentAlignment="Center"
                                      Text="{Binding InputOffset, UpdateSourceTrigger=PropertyChanged}">
                             </TextBox>
-                            <Button VerticalAlignment="Center" Padding="10" Margin="10,0" Cursor="Hand"
+                            <Button VerticalAlignment="Center" Padding="10" Margin="5,0" Cursor="Hand"
                                     Command="{Binding GoToOffsetCommand}"
                                     CommandParameter="{Binding InputOffset}">Перейти</Button>
-                            <Button VerticalAlignment="Center" Padding="10" Margin="10,0" Cursor="Hand"
+                            <Button VerticalAlignment="Center" Padding="10" Margin="5,0" Cursor="Hand"
                                     Command="{Binding GoToStartCommand}">На начало</Button>
                         </StackPanel>
                     </GroupBox>
@@ -74,7 +74,7 @@
                                   ItemsSource="{Binding BinaryRecords}" PreviewMouseWheel="RecordsListView_PreviewMouseWheel">
                                 <ListView.View>
                                     <GridView>
-                                        <GridViewColumn Header="Адрес" DisplayMemberBinding="{Binding Number}" Width="90" />
+                                        <GridViewColumn Header="Смещение" DisplayMemberBinding="{Binding Number}" Width="90" />
                                         <GridViewColumn Header="0" DisplayMemberBinding="{Binding HexCodes[0]}" Width="30" />
                                         <GridViewColumn Header="1" DisplayMemberBinding="{Binding HexCodes[1]}" Width="30" />
                                         <GridViewColumn Header="2" DisplayMemberBinding="{Binding HexCodes[2]}" Width="30" />
@@ -91,7 +91,7 @@
                                         <GridViewColumn Header="d" DisplayMemberBinding="{Binding HexCodes[13]}" Width="30" />
                                         <GridViewColumn Header="e" DisplayMemberBinding="{Binding HexCodes[14]}" Width="30" />
                                         <GridViewColumn Header="f" DisplayMemberBinding="{Binding HexCodes[15]}" Width="30" />
-                                        <GridViewColumn Header="Дамп" DisplayMemberBinding="{Binding Dump}" Width="Auto" />
+                                        <GridViewColumn Header="Симоволы" DisplayMemberBinding="{Binding Dump}" Width="Auto" />
                                     </GridView>
                                 </ListView.View>
                             </ListView>
