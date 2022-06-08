@@ -158,15 +158,7 @@ public class MainWindowViewModel : ViewModel
         {
             return;
         }
-        try
-        {
-            Refresh(0);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Ошибка обновления данных в приложении {ex.Message}", "Ошибка обновления");
-            throw;
-        }
+        ScrollValue = 0;
     }
 
     private ICommand? _CloseAppCommand;
