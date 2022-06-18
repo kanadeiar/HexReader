@@ -1,19 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-namespace HexReader
+﻿namespace HexReader
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -23,6 +8,38 @@ namespace HexReader
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void MainScollBar_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        {
+            if (e.ScrollEventType == System.Windows.Controls.Primitives.ScrollEventType.SmallIncrement && MainScollBar.Value < MainScollBar.Maximum)
+            {
+                MainScollBar.Value++;
+            }
+            if (e.ScrollEventType == System.Windows.Controls.Primitives.ScrollEventType.SmallDecrement && MainScollBar.Value > MainScollBar.Minimum)
+            {
+                MainScollBar.Value--;
+            }
+            if (e.ScrollEventType == System.Windows.Controls.Primitives.ScrollEventType.LargeIncrement && MainScollBar.Value + 40 < MainScollBar.Maximum)
+            {
+                MainScollBar.Value += 40;
+            }
+            if (e.ScrollEventType == System.Windows.Controls.Primitives.ScrollEventType.LargeDecrement && MainScollBar.Value - 40 > MainScollBar.Minimum)
+            {
+                MainScollBar.Value -= 40;
+            }
+        }
+
+        private void RecordsListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta < 0 && MainScollBar.Value < MainScollBar.Maximum)
+            {
+                MainScollBar.Value++;
+            }
+            if (e.Delta > 0 && MainScollBar.Value > MainScollBar.Minimum)
+            {
+                MainScollBar.Value--;
+            }
         }
     }
 }

@@ -5,8 +5,102 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HexReader"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+        Height="600" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" Background="LightGreen"
+        Title="{Binding Title}"
+        DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Главное меню">
+                <MenuItem Header="Открыть файл"
+                          Command="{Binding OpenFileCommand}"/>
+                <Separator/>
+                <MenuItem Header="Выход" 
+                          Command="{Binding CloseAppCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Справка">
+                <MenuItem Header="О программе ..."
+                          Command="{Binding ShowAboutCommand}"/>
+            </MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Путь и имя открытого файла: "/>
+                    <TextBlock Text="{Binding FileName}" />
+                </StackPanel>
+            </StatusBarItem>
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Размер файла (байт): "/>
+                    <TextBlock Text="{Binding FileSize}" />
+                </StackPanel>
+            </StatusBarItem>
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Скролл (строка/всего): "/>
+                    <TextBlock Text="{Binding ScrollValue}" />
+                    <TextBlock Text="/"/>
+                    <TextBlock Text="{Binding CountLines}" />
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+        <TabControl FontSize="14">
+            <TabItem Header="Просмотр файла в бинарном виде" Height="40">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Grid.Row="0" Header="Переход по файлу">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="Смещение (номер строки):"/>
+                            <TextBox VerticalAlignment="Center" Height="30" Width="200" Margin="10,0,0,0" VerticalContentAlignment="Center"
+                                     Text="{Binding InputOffset, UpdateSourceTrigger=PropertyChanged}">
+                            </TextBox>
+                            <Button VerticalAlignment="Center" Padding="10" Margin="5,0" Cursor="Hand"
+                                    Command="{Binding GoToOffsetCommand}"
+                                    CommandParameter="{Binding InputOffset}">Перейти</Button>
+                            <Button VerticalAlignment="Center" Padding="10" Margin="5,0" Cursor="Hand"
+                                    Command="{Binding GoToStartCommand}">На начало</Button>
+                        </StackPanel>
+                    </GroupBox>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Grid.Column="0" Header="Содержимое файла:">
+                            <ListView FontSize="16" FontFamily="Consolas" Foreground="Black" Name="RecordsListView" SelectionMode="Single" ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                  ItemsSource="{Binding BinaryRecords}" PreviewMouseWheel="RecordsListView_PreviewMouseWheel">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Смещение" DisplayMemberBinding="{Binding Number}" Width="90" />
+                                        <GridViewColumn Header="0" DisplayMemberBinding="{Binding HexCodes[0]}" Width="30" />
+                                        <GridViewColumn Header="1" DisplayMemberBinding="{Binding HexCodes[1]}" Width="30" />
+                                        <GridViewColumn Header="2" DisplayMemberBinding="{Binding HexCodes[2]}" Width="30" />
+                                        <GridViewColumn Header="3" DisplayMemberBinding="{Binding HexCodes[3]}" Width="30" />
+                                        <GridViewColumn Header="4" DisplayMemberBinding="{Binding HexCodes[4]}" Width="30" />
+                                        <GridViewColumn Header="5" DisplayMemberBinding="{Binding HexCodes[5]}" Width="30" />
+                                        <GridViewColumn Header="6" DisplayMemberBinding="{Binding HexCodes[6]}" Width="30" />
+                                        <GridViewColumn Header="7" DisplayMemberBinding="{Binding HexCodes[7]}" Width="30" />
+                                        <GridViewColumn Header="8" DisplayMemberBinding="{Binding HexCodes[8]}" Width="30" />
+                                        <GridViewColumn Header="9" DisplayMemberBinding="{Binding HexCodes[9]}" Width="30" />
+                                        <GridViewColumn Header="a" DisplayMemberBinding="{Binding HexCodes[10]}" Width="30" />
+                                        <GridViewColumn Header="b" DisplayMemberBinding="{Binding HexCodes[11]}" Width="30" />
+                                        <GridViewColumn Header="c" DisplayMemberBinding="{Binding HexCodes[12]}" Width="30" />
+                                        <GridViewColumn Header="d" DisplayMemberBinding="{Binding HexCodes[13]}" Width="30" />
+                                        <GridViewColumn Header="e" DisplayMemberBinding="{Binding HexCodes[14]}" Width="30" />
+                                        <GridViewColumn Header="f" DisplayMemberBinding="{Binding HexCodes[15]}" Width="30" />
+                                        <GridViewColumn Header="Симоволы" DisplayMemberBinding="{Binding Dump}" Width="Auto" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </GroupBox>
+                        <ScrollBar Name="MainScollBar" Grid.Column="1" Orientation="Vertical" Minimum="0" Maximum="{Binding CountLines}" Width="30" Cursor="Hand" 
+                                   Scroll="MainScollBar_Scroll" Value="{Binding ScrollValue}"  ViewportSize="40"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
 </Window>
